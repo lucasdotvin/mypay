@@ -10,12 +10,12 @@ use Illuminate\Http\Response;
 class LoginController extends Controller
 {
     /**
-     * Store a newly created resource in storage.
+     * Authenticate the user and return a token.
      *
      * @param  LoginRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function login(LoginRequest $request)
+    public function __invoke(LoginRequest $request)
     {
         $token = $request->user()->createToken($request->validated('identity'));
 
