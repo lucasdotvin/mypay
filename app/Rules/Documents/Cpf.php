@@ -50,22 +50,31 @@ class Cpf implements Rule
     private function calculateFirstVerificationDigit(string $cpf): string
     {
         $firstSum = 0;
+        $weight = 10;
 
         for ($digitIndex = 0; $digitIndex < 9; $digitIndex++) {
-            $firstSum += $cpf[$digitIndex] * (10 - $digitIndex);
+            $firstSum += $cpf[$digitIndex] * $weight;
+
+            $weight--;
         }
 
-        return (11 - ($firstSum % 11)) % 10;
+        $remainder = $firstSum % 11;
+        return $remainder < 2 ? 0 : 11 - $remainder;
     }
 
     private function calculateSecondVerificationDigit(string $cpf): string
     {
         $secondSum = 0;
+        $weight = 11;
 
         for ($digitIndex = 0; $digitIndex < 10; $digitIndex++) {
-            $secondSum += $cpf[$digitIndex] * (11 - $digitIndex);
+            $secondSum += $cpf[$digitIndex] * $weight;
+
+            $weight--;
         }
 
-        return (11 - ($secondSum % 11)) % 10;
+        $remainder = $secondSum % 11;
+
+        return $remainder < 2 ? 0 : 11 - $remainder;
     }
 }
