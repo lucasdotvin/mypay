@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Validation\Rules\Password;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -34,6 +35,12 @@ class AuthServiceProvider extends ServiceProvider
             $token = hash_hmac('sha256', $notifiable->getEmailForVerification(), config('app.key'));
 
             return config('app.frontend_url')."/verify-email/$token?email={$notifiable->getEmailForVerification()}";
+        });
+
+        Password::defaults(function () {
+            Password::min(6)
+                ->letters()
+                ->numbers();
         });
     }
 }
