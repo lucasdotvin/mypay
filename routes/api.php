@@ -15,3 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', fn () => ['Laravel' => app()->version()]);
+
+Route::middleware('auth:sanctum')
+    ->group(function () {
+        Route::apiResource('/tokens', TokenController::class)->only(['index', 'destroy']);
+    });

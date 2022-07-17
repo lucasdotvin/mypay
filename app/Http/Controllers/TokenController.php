@@ -1,11 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\StoreTokenRequest;
-use App\Http\Resources\Auth\NewTokenResource;
-use App\Http\Resources\Auth\TokenCollection;
+use App\Http\Resources\TokenCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
 
@@ -24,19 +22,6 @@ class TokenController extends Controller
             ->paginate();
 
         return TokenCollection::make($tokens);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  StoreTokenRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreTokenRequest $request)
-    {
-        $token = $request->user()->createToken($request->validated('identity'));
-
-        return response(NewTokenResource::make($token), Response::HTTP_CREATED);
     }
 
     /**
