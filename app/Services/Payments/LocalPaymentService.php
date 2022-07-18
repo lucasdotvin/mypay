@@ -6,6 +6,7 @@ use App\Contracts\Balance\BalanceService;
 use App\Contracts\Payments\Authorization\AuthorizationService;
 use App\Contracts\Payments\PaymentRepository;
 use App\Contracts\Payments\PaymentService as PaymentServiceContract;
+use App\Contracts\UserRepository;
 use App\DTO\Payments\AuthorizationPayload;
 use App\Exceptions\Payments\DeniedPayment;
 use App\Exceptions\Payments\NonSufficientFunds;
@@ -16,9 +17,10 @@ use Illuminate\Support\Facades\DB;
 class LocalPaymentService implements PaymentServiceContract
 {
     public function __construct(
-        private BalanceService $balanceService,
         private AuthorizationService $authorizationService,
+        private BalanceService $balanceService,
         private PaymentRepository $paymentRepository,
+        private UserRepository $userRepository,
     ) {
     }
 
@@ -47,7 +49,11 @@ class LocalPaymentService implements PaymentServiceContract
 
     private function authorizePayment(int $amount, int $payeeId, int $payerId)
     {
-        $authorizationPayload = new AuthorizationPayload($amount, $payeeId, $payerId);
+        $authorizationPayload = new AuthorizationPayload(
+            $amount,
+            $this->userRepository->getDocumentById($payeeId),
+            $this->userRepository->getDocumentById($payerId),
+        );
 
         $authorized = $this->authorizationService->authorize($authorizationPayload);
 
