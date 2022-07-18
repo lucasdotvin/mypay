@@ -23,10 +23,11 @@ docker run --rm \
     composer install --ignore-platform-reqs
 ```
 
-After that, use the Laravel sail to activate the containers:
+After that, use the Laravel sail to activate the containers and generate an application key:
 
 ```
 ./vendor/bin/sail up -d
+./vendor/bin/sail artisan key:generate
 ```
 
 In the end, you should run the migrations and fill the database with mandatory data:
@@ -35,6 +36,9 @@ In the end, you should run the migrations and fill the database with mandatory d
 ./vendor/bin/sail artisan migrate
 ./vendor/bin/sail artisan db:seed MandatoryDataSeeder
 ```
+
+> **Note**
+> If the migration command fails, try restart all containers by calling `./vendor/bin/sail stop` and then `./vendor/bin/sail up -d` once more.
 
 ## Endpoints
 
