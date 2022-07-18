@@ -47,6 +47,16 @@ class LocalPaymentService implements PaymentServiceContract
         return $this->balanceService->getCurrentUserBalance() >= $amount;
     }
 
+    /**
+     * Authorize a payment.
+     *
+     * @param int $amount
+     * @param int $payeeId
+     * @param int $payerId
+     * @return Payment
+     *
+     * @throws DeniedPayment if the payment was not authorized.
+     */
     private function authorizePayment(int $amount, int $payeeId, int $payerId)
     {
         $authorizationPayload = new AuthorizationPayload(
