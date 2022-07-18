@@ -6,10 +6,12 @@ use App\Contracts\Balance\BalanceService;
 use App\Contracts\Payments\Authorization\AuthorizationService;
 use App\Contracts\Payments\PaymentRepository;
 use App\Contracts\Payments\PaymentService as PaymentServiceContract;
+use App\Contracts\Permissions\PermissionsService;
 use App\Contracts\UserRepository;
 use App\DTO\Payments\AuthorizationPayload;
 use App\Exceptions\Payments\DeniedPayment;
 use App\Exceptions\Payments\NonSufficientFunds;
+use App\Exceptions\Permissions\CantPerformAction;
 use App\Models\Payment;
 use Illuminate\Pagination\CursorPaginator;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +21,7 @@ class LocalPaymentService implements PaymentServiceContract
     public function __construct(
         private AuthorizationService $authorizationService,
         private BalanceService $balanceService,
+        private PermissionsService $permissionsService,
         private PaymentRepository $paymentRepository,
         private UserRepository $userRepository,
     ) {
@@ -34,6 +37,8 @@ class LocalPaymentService implements PaymentServiceContract
         return DB::transaction(function () use ($amount, $message, $payeeId) {
             throw_unless($this->canAfford($amount), new NonSufficientFunds);
 
+            $this->checkUserPermissions();
+
             $this->authorizePayment($amount, $payeeId, auth()->id());
 
             $payment = $this->registerPayment($amount, $message, $payeeId, auth()->id());
@@ -45,6 +50,18 @@ class LocalPaymentService implements PaymentServiceContract
     public function canAfford(int $amount): bool
     {
         return $this->balanceService->getCurrentUserBalance() >= $amount;
+    }
+
+    /**
+     * Check if the user can do payments.
+     *
+     * @throws DeniedPayment if the payment was not authorized.
+     */
+    private function checkUserPermissions()
+    {
+        $hasPermissions = $this->permissionsService->userCan(auth()->id(), 'pay');
+
+        throw_unless($hasPermissions, new CantPerformAction);
     }
 
     /**
