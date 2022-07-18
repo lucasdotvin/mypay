@@ -12,6 +12,7 @@ use App\DTO\Payments\AuthorizationPayload;
 use App\Exceptions\Payments\DeniedPayment;
 use App\Exceptions\Payments\NonSufficientFunds;
 use App\Exceptions\Permissions\CantPerformAction;
+use App\Jobs\Payments\NotifyPayee;
 use App\Models\Payment;
 use Illuminate\Pagination\CursorPaginator;
 use Illuminate\Support\Facades\DB;
@@ -43,6 +44,8 @@ class LocalPaymentService implements PaymentServiceContract
 
             $payment = $this->registerPayment($amount, $message, $payeeId, auth()->id());
 
+            $this->notifyPayee($payment);
+
             return $payment->id;
         });
     }
@@ -50,6 +53,16 @@ class LocalPaymentService implements PaymentServiceContract
     public function canAfford(int $amount): bool
     {
         return $this->balanceService->getCurrentUserBalance() >= $amount;
+    }
+
+    /**
+     * Notify the payee about the payment.
+     *
+     * @param Payment $payment
+     */
+    private function notifyPayee(Payment $payment)
+    {
+        NotifyPayee::dispatch($payment);
     }
 
     /**
