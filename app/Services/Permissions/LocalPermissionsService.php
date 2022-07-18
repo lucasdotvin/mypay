@@ -11,7 +11,7 @@ class LocalPermissionsService implements PermissionsServiceContract
     {
         $role = Role::whereRelation('users', 'id', $userId)->first();
 
-        $permissions = $role->permissions()->get();
+        $permissions = cache()->rememberForever("role.$role->id.permissions", fn () => $role->permissions()->get());
 
         return $permissions->contains('slug', $permissionSlug);
     }
