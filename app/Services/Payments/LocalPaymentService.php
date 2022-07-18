@@ -32,12 +32,6 @@ class LocalPaymentService implements PaymentServiceContract
 
             $payment = $this->registerPayment($amount, $message, $payeeId, auth()->id());
 
-            $this->balanceService
-                ->incrementUserBalance($payeeId, $amount);
-
-            $this->balanceService
-                ->decrementUserBalance(auth()->id(), $amount);
-
             return $payment->id;
         });
     }
@@ -58,16 +52,24 @@ class LocalPaymentService implements PaymentServiceContract
      */
     private function registerPayment(int $amount, string $message, int $payeeId, int $payerId): Payment
     {
-        $payment = new Payment(['amount' => $amount, 'message' => $message]);
+        return DB::transaction(function () use ($amount, $message, $payeeId, $payerId) {
+            $payment = new Payment(['amount' => $amount, 'message' => $message]);
 
-        $payment->payee()
-            ->associate($payeeId);
+            $payment->payee()
+                ->associate($payeeId);
 
-        $payment->payer()
-            ->associate($payerId);
+            $payment->payer()
+                ->associate($payerId);
 
-        $payment->save();
+            $payment->save();
 
-        return $payment;
+            $this->balanceService
+                ->incrementUserBalance($payeeId, $amount);
+
+            $this->balanceService
+                ->decrementUserBalance($payerId, $amount);
+
+            return $payment;
+        });
     }
 }
