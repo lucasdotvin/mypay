@@ -16,6 +16,7 @@ class MandatoryDataSeeder extends Seeder
     {
         DB::transaction(function () {
             $this->call(RoleSeeder::class);
+            $this->call(PermissionSeeder::class);
         });
     }
 }
