@@ -23,6 +23,7 @@ class UserFactory extends Factory
             'last_name' => fake()->lastName(),
             'document' => fake('pt_BR')->cpf(),
             'email' => fake()->safeEmail(),
+            'balance' => 0,
             'role_id' => Models\Role::whereSlug(Enums\Role::Person)->value('id'),
             'email_verified_at' => now(),
             'password' => bcrypt('password'),
