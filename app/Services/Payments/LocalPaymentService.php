@@ -42,7 +42,7 @@ class LocalPaymentService implements PaymentServiceContract
     }
 
     /**
-     * Create a payment register.
+     * Create a payment register and update the users' balances.
      *
      * @param  int  $amount
      * @param  string  $message
