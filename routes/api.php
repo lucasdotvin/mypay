@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TokenController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,4 +20,5 @@ Route::get('/', fn () => ['Laravel' => app()->version()]);
 Route::middleware('auth:sanctum')
     ->group(function () {
         Route::apiResource('/tokens', TokenController::class)->only(['index', 'destroy']);
+        Route::apiResource('/payments', PaymentController::class)->only(['index', 'show']);
     });
