@@ -2,6 +2,7 @@
 
 namespace App\Contracts\Payments;
 
+use App\Exceptions\Payments\DeniedPayment;
 use App\Exceptions\Payments\NonSufficientFunds;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 
@@ -22,6 +23,7 @@ interface PaymentService
      * @param  int  $payeeId
      * @return int
      *
+     * @throws DeniedPayment if the payment was not authorized.
      * @throws NonSufficientFunds if the user cannot afford the amount.
      */
     public function pay(int $amount, string $message, int $payeeId): int;

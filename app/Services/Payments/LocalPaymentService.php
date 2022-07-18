@@ -3,18 +3,21 @@
 namespace App\Services\Payments;
 
 use App\Contracts\Balance\BalanceService;
+use App\Contracts\Payments\Authorization\AuthorizationService;
 use App\Contracts\Payments\PaymentRepository;
 use App\Contracts\Payments\PaymentService as PaymentServiceContract;
+use App\DTO\Payments\AuthorizationPayload;
+use App\Exceptions\Payments\DeniedPayment;
 use App\Exceptions\Payments\NonSufficientFunds;
 use App\Models\Payment;
 use Illuminate\Pagination\CursorPaginator;
 use Illuminate\Support\Facades\DB;
-use ValueError;
 
 class LocalPaymentService implements PaymentServiceContract
 {
     public function __construct(
         private BalanceService $balanceService,
+        private AuthorizationService $authorizationService,
         private PaymentRepository $paymentRepository,
     ) {
     }
@@ -29,6 +32,8 @@ class LocalPaymentService implements PaymentServiceContract
         return DB::transaction(function () use ($amount, $message, $payeeId) {
             throw_unless($this->canAfford($amount), new NonSufficientFunds);
 
+            $this->authorizePayment($amount, $payeeId, auth()->id());
+
             $payment = $this->registerPayment($amount, $message, $payeeId, auth()->id());
 
             return $payment->id;
@@ -38,6 +43,15 @@ class LocalPaymentService implements PaymentServiceContract
     public function canAfford(int $amount): bool
     {
         return $this->balanceService->getCurrentUserBalance() >= $amount;
+    }
+
+    private function authorizePayment(int $amount, int $payeeId, int $payerId)
+    {
+        $authorizationPayload = new AuthorizationPayload($amount, $payeeId, $payerId);
+
+        $authorized = $this->authorizationService->authorize($authorizationPayload);
+
+        throw_unless($authorized, new DeniedPayment);
     }
 
     /**
