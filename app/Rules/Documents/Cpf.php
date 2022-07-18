@@ -27,7 +27,7 @@ class Cpf implements Rule
 
         $firstDigit = $this->calculateFirstVerificationDigit($numericCpf);
         $secondDigit = $this->calculateSecondVerificationDigit($numericCpf);
-        $verificationPair = $firstDigit . $secondDigit;
+        $verificationPair = $firstDigit.$secondDigit;
 
         return str_ends_with($numericCpf, $verificationPair);
     }
@@ -59,6 +59,7 @@ class Cpf implements Rule
         }
 
         $remainder = $firstSum % 11;
+
         return $remainder < 2 ? 0 : 11 - $remainder;
     }
 

@@ -8,5 +8,6 @@ class AuthorizationPayload
         public int $amount,
         public string $payerDocument,
         public string $payeeDocument,
-    ) {}
+    ) {
+    }
 }

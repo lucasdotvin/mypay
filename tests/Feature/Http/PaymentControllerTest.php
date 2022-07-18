@@ -41,11 +41,9 @@ class PaymentControllerTest extends TestCase
         $response = $this->getJson(route('payments.index'));
 
         $response->assertOk()
-            ->assertJson(fn (AssertableJson $json) =>
-                $json->hasAll(['meta', 'links'])
+            ->assertJson(fn (AssertableJson $json) => $json->hasAll(['meta', 'links'])
                     ->has('payments', 2)
-                    ->has('payments.0', fn (AssertableJson $json) =>
-                        $json->where('id', $sentPayment->id)
+                    ->has('payments.0', fn (AssertableJson $json) => $json->where('id', $sentPayment->id)
                             ->where('amount', $sentPayment->amount)
                             ->where('message', $sentPayment->message)
                             ->where('created_at', $sentPayment->created_at->toIsoString())
@@ -54,8 +52,7 @@ class PaymentControllerTest extends TestCase
                             ->where('payer.last_name', $user->last_name)
                             ->has('payee')
                     )
-                    ->has('payments.1', fn (AssertableJson $json) =>
-                        $json->where('id', $receivedPayment->id)
+                    ->has('payments.1', fn (AssertableJson $json) => $json->where('id', $receivedPayment->id)
                             ->where('amount', $receivedPayment->amount)
                             ->where('message', $receivedPayment->message)
                             ->where('created_at', $receivedPayment->created_at->toIsoString())

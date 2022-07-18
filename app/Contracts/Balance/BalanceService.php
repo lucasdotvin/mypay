@@ -14,7 +14,7 @@ interface BalanceService
     /**
      * Get the balance of a user.
      *
-     * @param int $id
+     * @param  int  $id
      * @return int
      */
     public function getUserBalance(int $id): int;
@@ -22,8 +22,8 @@ interface BalanceService
     /**
      * Increment the balance of a user.
      *
-     * @param int $id
-     * @param int $amount
+     * @param  int  $id
+     * @param  int  $amount
      * @return void
      */
     public function incrementUserBalance(int $id, int $amount): void;
@@ -31,8 +31,8 @@ interface BalanceService
     /**
      * Decrement the balance of a user.
      *
-     * @param int $id
-     * @param int $amount
+     * @param  int  $id
+     * @param  int  $amount
      * @return void
      */
     public function decrementUserBalance(int $id, int $amount): void;

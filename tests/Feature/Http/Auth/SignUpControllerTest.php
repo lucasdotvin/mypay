@@ -3,7 +3,6 @@
 namespace Tests\Feature\Http\Auth;
 
 use App\Enums;
-use App\Models;
 use App\Models\User;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -260,8 +259,7 @@ class SignUpControllerTest extends TestCase
         $response = $this->postJson(route('auth.signup'), $creationPayload);
 
         $response->assertCreated()
-            ->assertJson(fn (AssertableJson $json) =>
-                $json->has('id')
+            ->assertJson(fn (AssertableJson $json) => $json->has('id')
                     ->where('first_name', $creationPayload['first_name'])
                     ->where('last_name', $creationPayload['last_name'])
                     ->where('email', $creationPayload['email'])

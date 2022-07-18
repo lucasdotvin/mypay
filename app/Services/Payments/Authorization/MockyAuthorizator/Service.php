@@ -9,7 +9,8 @@ class Service implements AuthorizationServiceContract
 {
     public function __construct(
         private Client $client,
-    ) {}
+    ) {
+    }
 
     public function authorize(AuthorizationPayload $payload): bool
     {

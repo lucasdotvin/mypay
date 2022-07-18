@@ -15,7 +15,8 @@ class LocalPaymentService implements PaymentServiceContract
     public function __construct(
         private BalanceService $balanceService,
         private PaymentRepository $paymentRepository,
-    ) {}
+    ) {
+    }
 
     public function getMySentAndReceivedPayments(string $cursor = null): CursorPaginator
     {
@@ -49,10 +50,10 @@ class LocalPaymentService implements PaymentServiceContract
     /**
      * Create a payment register.
      *
-     * @param int $amount
-     * @param string $message
-     * @param int $payeeId
-     * @param int $payerId
+     * @param  int  $amount
+     * @param  string  $message
+     * @param  int  $payeeId
+     * @param  int  $payerId
      * @return Payment
      */
     public function createPayment(int $amount, string $message, int $payeeId, int $payerId): Payment

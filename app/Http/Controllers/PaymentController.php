@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Contracts\Payments\PaymentService;
 use App\Http\Resources\PaymentCollection;
-use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {

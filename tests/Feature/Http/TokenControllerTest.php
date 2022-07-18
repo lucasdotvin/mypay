@@ -33,11 +33,9 @@ class TokenControllerTest extends TestCase
         $response = $this->getJson(route('tokens.index'));
 
         $response->assertOk()
-            ->assertJson(fn (AssertableJson $json) =>
-                $json->hasAll(['meta', 'links'])
+            ->assertJson(fn (AssertableJson $json) => $json->hasAll(['meta', 'links'])
                     ->has('tokens', 2)
-                    ->has('tokens.0', fn (AssertableJson $json) =>
-                        $json->where('id', $firstToken->accessToken->id)
+                    ->has('tokens.0', fn (AssertableJson $json) => $json->where('id', $firstToken->accessToken->id)
                             ->where('name', 'first-token')
                             ->where('created_at', $firstToken->accessToken->created_at->toIsoString())
                     )

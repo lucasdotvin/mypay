@@ -27,7 +27,7 @@ class Cnpj implements Rule
 
         $firstDigit = $this->calculateFirstVerificationDigit($numericCnpj);
         $secondDigit = $this->calculateSecondVerificationDigit($numericCnpj);
-        $verificationPair = $firstDigit . $secondDigit;
+        $verificationPair = $firstDigit.$secondDigit;
 
         return str_ends_with($numericCnpj, $verificationPair);
     }

@@ -11,6 +11,7 @@ trait FillDatabaseWithMandatoryData
      * Setup up the database with mandatory data.
      *
      * @return void
+     *
      * @throws IncompleteTestError if the database is not ready.
      */
     public function setUpFillDatabaseWithMandatoryData()

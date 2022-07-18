@@ -44,8 +44,7 @@ class ClientTest extends TestCase
         $service = new Client;
         $service->authorize($authorizationPayload);
 
-        Http::assertSent(fn (Request $request) =>
-            $request->body() === json_encode($authorizationPayload)
+        Http::assertSent(fn (Request $request) => $request->body() === json_encode($authorizationPayload)
         );
     }
 }

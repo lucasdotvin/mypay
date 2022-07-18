@@ -2,7 +2,6 @@
 
 namespace App\Services\Payments\Authorization\MockyAuthorizator;
 
-use App\DTO\Payments\AuthorizationPayload;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 
