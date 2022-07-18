@@ -5,9 +5,11 @@ namespace Tests\Feature\Http\Auth;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Tests\Traits\FillDatabaseWithMandatoryData;
 
 class LoginControllerTest extends TestCase
 {
+    use FillDatabaseWithMandatoryData;
     use RefreshDatabase;
 
     /** @test */

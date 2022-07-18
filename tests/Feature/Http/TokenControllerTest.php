@@ -7,10 +7,12 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
+use Tests\Traits\FillDatabaseWithMandatoryData;
 
 class TokenControllerTest extends TestCase
 {
     use RefreshDatabase;
+    use FillDatabaseWithMandatoryData;
 
     /** @test */
     public function it_requires_an_authenticated_user_to_list_tokens()
