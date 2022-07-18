@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Services\Permissions\LocalPermissionsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 use Tests\Traits\FillDatabaseWithMandatoryData;
 
@@ -47,5 +48,25 @@ class LocalPermissionsServiceTest extends TestCase
         $result = $service->userCan($user->id, 'some-permission');
 
         $this->assertFalse($result);
+    }
+
+    /** @test */
+    public function it_stores_role_permissions_in_cache()
+    {
+        $role = Role::factory()
+            ->hasAttached(Permission::factory()->createOne())
+            ->createOne();
+
+        $user = User::factory()
+            ->for($role)
+            ->createOne();
+
+        Cache::shouldReceive('rememberForever')
+            ->once()
+            ->withSomeOfArgs("role.$role->id.permissions")
+            ->andReturn($role->permissions);
+
+        $service = new LocalPermissionsService;
+        $service->userCan($user->id, 'some-permission');
     }
 }
