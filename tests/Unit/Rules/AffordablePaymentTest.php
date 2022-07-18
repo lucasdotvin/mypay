@@ -4,7 +4,6 @@ namespace Tests\Unit\Rules;
 
 use App\Contracts\Payments\PaymentService;
 use App\Rules\AffordablePayment;
-use Illuminate\Support\Facades\Validator;
 use Mockery\MockInterface;
 use Tests\TestCase;
 

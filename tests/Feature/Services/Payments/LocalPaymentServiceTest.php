@@ -12,7 +12,6 @@ use App\Services\Payments\LocalPaymentService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Tests\Traits\FillDatabaseWithMandatoryData;
-use ValueError;
 
 class LocalPaymentServiceTest extends TestCase
 {

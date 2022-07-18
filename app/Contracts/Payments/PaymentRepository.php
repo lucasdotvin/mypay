@@ -21,6 +21,7 @@ interface PaymentRepository
      * @param  int  $id
      * @param  array  $relations
      * @return Payment
+     *
      * @throws \Illuminate\Database\Exceptions\ModelNotFoundException
      */
     public function findOrFail(int $id, array $relations = []): Payment;

@@ -6,7 +6,8 @@ use Exception;
 
 class NonSufficientFunds extends Exception
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->message = trans('exceptions.non_sufficient_funds');
     }
 

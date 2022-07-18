@@ -6,7 +6,8 @@ use Exception;
 
 class CantPerformAction extends Exception
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->message = trans('exceptions.cant_perform_action');
     }
 

@@ -67,9 +67,9 @@ class LocalPaymentService implements PaymentServiceContract
     /**
      * Authorize a payment.
      *
-     * @param int $amount
-     * @param int $payeeId
-     * @param int $payerId
+     * @param  int  $amount
+     * @param  int  $payeeId
+     * @param  int  $payerId
      * @return Payment
      *
      * @throws DeniedPayment if the payment was not authorized.
