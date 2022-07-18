@@ -26,6 +26,6 @@ class AffordablePayment implements Rule
      */
     public function message()
     {
-        return 'validation.affordable_payment';
+        return trans('validation.affordable_payment');
     }
 }

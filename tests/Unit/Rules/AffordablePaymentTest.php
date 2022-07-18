@@ -46,6 +46,6 @@ class AffordablePaymentTest extends TestCase
 
         $message = $rule->message();
 
-        $this->assertEquals('validation.affordable_payment', $message);
+        $this->assertEquals(trans('validation.affordable_payment'), $message);
     }
 }

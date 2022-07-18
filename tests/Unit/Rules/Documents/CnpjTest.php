@@ -3,7 +3,7 @@
 namespace Tests\Unit\Rules\Documents;
 
 use App\Rules\Documents\Cnpj;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class CnpjTest extends TestCase
 {
@@ -74,6 +74,6 @@ class CnpjTest extends TestCase
 
         $message = $rule->message();
 
-        $this->assertEquals('validation.cnpj', $message);
+        $this->assertEquals(trans('validation.cnpj'), $message);
     }
 }

@@ -3,7 +3,7 @@
 namespace Tests\Unit\Rules\Documents;
 
 use App\Rules\Documents\Cpf;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class CpfTest extends TestCase
 {
@@ -74,6 +74,6 @@ class CpfTest extends TestCase
 
         $message = $rule->message();
 
-        $this->assertEquals('validation.cpf', $message);
+        $this->assertEquals(trans('validation.cpf'), $message);
     }
 }

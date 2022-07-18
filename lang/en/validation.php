@@ -137,9 +137,9 @@ return [
     'url' => 'The :attribute must be a valid URL.',
     'uuid' => 'The :attribute must be a valid UUID.',
 
-    'cnpj' => 'The :attribute must be a valid CNPJ.',
-    'cpf' => 'The :attribute must be a valid CPF.',
-    'affordable_payment' => 'The :attribute user has not enough money for this payment.',
+    'cnpj' => 'The field must be a valid CNPJ.',
+    'cpf' => 'The field must be a valid CPF.',
+    'affordable_payment' => 'The user has not enough money for this payment.',
 
     /*
     |--------------------------------------------------------------------------
