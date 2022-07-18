@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Services\Payments;
 
+use App\Contracts\Payments\Authorization\AuthorizationService;
+use App\Exceptions\Payments\DeniedPayment;
 use App\Exceptions\Payments\NonSufficientFunds;
 use App\Models\User;
 use App\Services\Payments\LocalPaymentService;
@@ -99,6 +101,30 @@ class LocalPaymentServiceTest extends TestCase
 
         $service = app(LocalPaymentService::class);
         $service->pay(101, 'Lorem ipsum.', $payee->id);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $payer->id,
+            'balance' => 100,
+        ]);
+
+        $this->assertDatabaseCount('payments', 0);
+    }
+
+    /** @test */
+    public function it_raises_an_exception_if_the_payment_is_denied()
+    {
+        $payee = User::factory()->createOne();
+
+        $this->actingAs($payer = User::factory()->createOne(['balance' => 100]));
+
+        $this->mock(AuthorizationService::class, function ($mock) {
+            $mock->shouldReceive('authorize')->andReturn(false);
+        });
+
+        $this->expectException(DeniedPayment::class);
+
+        $service = app(LocalPaymentService::class);
+        $service->pay(99, 'Lorem ipsum.', $payee->id);
 
         $this->assertDatabaseHas('users', [
             'id' => $payer->id,
