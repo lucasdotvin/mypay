@@ -193,9 +193,13 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
+        App\Providers\BalanceServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\PaymentServiceProvider::class,
+        App\Providers\PermissionServiceProvider::class,
+        App\Providers\UserServiceProvider::class,
 
     ],
 
