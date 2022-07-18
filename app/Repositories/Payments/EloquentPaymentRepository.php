@@ -16,4 +16,9 @@ class EloquentPaymentRepository implements PaymentRepository
             ->orWhereBelongsTo($user, 'payer')
             ->cursorPaginate(cursor: $cursor);
     }
+
+    public function findOrFail(int $id, array $relations = []): Payment
+    {
+        return Payment::with($relations)->findOrFail($id);
+    }
 }
