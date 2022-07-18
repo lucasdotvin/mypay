@@ -31,4 +31,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'mocky' => [
+        'url' => env('MOCKY_AUTHORIZATOR_URL'),
+        'key' => env('MOCKY_AUTHORIZATOR_API_KEY'),
+        'secret' => env('MOCKY_AUTHORIZATOR_API_SECRET'),
+    ],
+
 ];
