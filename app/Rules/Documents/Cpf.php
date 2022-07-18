@@ -39,7 +39,7 @@ class Cpf implements Rule
      */
     public function message(): string
     {
-        return 'The validation error message.';
+        return 'validation.cpf';
     }
 
     private function removeNotNumericChars(string $cpf): string

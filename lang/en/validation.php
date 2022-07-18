@@ -137,6 +137,10 @@ return [
     'url' => 'The :attribute must be a valid URL.',
     'uuid' => 'The :attribute must be a valid UUID.',
 
+    'cnpj' => 'The :attribute must be a valid CNPJ.',
+    'cpf' => 'The :attribute must be a valid CPF.',
+    'affordable_payment' => 'The :attribute user has not enough money for this payment.',
+
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines

@@ -39,7 +39,7 @@ class Cnpj implements Rule
      */
     public function message(): string
     {
-        return 'The validation error message.';
+        return 'validation.cnpj';
     }
 
     private function removeNotNumericChars(string $cnpj): string
