@@ -6,7 +6,13 @@ This is an example of a payment platform, created for study purposes.
 
 ## Installation
 
-You can install the dependencies using a Docker image, so you avoid errors with the requirements:
+At first, you should copy your `.env.example` file to `.env`:
+
+```
+cp .env.example .env
+```
+
+Then, you can install the dependencies using a Docker image, so you'll avoid errors with the requirements:
 
 ```bash
 docker run --rm \
