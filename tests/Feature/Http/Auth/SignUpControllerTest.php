@@ -264,6 +264,7 @@ class SignUpControllerTest extends TestCase
                     ->where('last_name', $creationPayload['last_name'])
                     ->where('email', $creationPayload['email'])
                     ->where('document', $creationPayload['document'])
+                    ->where('balance', $creationPayload['balance'])
                     ->where('role.slug', $creationPayload['role']->value)
                     ->has('created_at')
             );

@@ -20,6 +20,7 @@ class UserService implements UserServiceContract
             'email' => $email,
             'document' => $document,
             'password' => bcrypt($password),
+            'balance' => 0,
         ]);
 
         $roleId = Role::whereSlug($role)->value('id');
