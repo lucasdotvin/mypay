@@ -30,7 +30,7 @@ class LocalPaymentService implements PaymentServiceContract
                 throw new ValueError(trans('exceptions.messages.non-sufficient-funds'));
             }
 
-            $payment = $this->createPayment($amount, $message, $payeeId, auth()->id());
+            $payment = $this->registerPayment($amount, $message, $payeeId, auth()->id());
 
             $this->balanceService
                 ->incrementUserBalance($payeeId, $amount);
@@ -56,7 +56,7 @@ class LocalPaymentService implements PaymentServiceContract
      * @param  int  $payerId
      * @return Payment
      */
-    public function createPayment(int $amount, string $message, int $payeeId, int $payerId): Payment
+    private function registerPayment(int $amount, string $message, int $payeeId, int $payerId): Payment
     {
         $payment = new Payment(['amount' => $amount, 'message' => $message]);
 
