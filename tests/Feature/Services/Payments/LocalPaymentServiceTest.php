@@ -3,8 +3,10 @@
 namespace Tests\Feature\Services\Payments;
 
 use App\Contracts\Payments\Authorization\AuthorizationService;
+use App\Contracts\Permissions\PermissionsService;
 use App\Exceptions\Payments\DeniedPayment;
 use App\Exceptions\Payments\NonSufficientFunds;
+use App\Exceptions\Permissions\CantPerformAction;
 use App\Models\User;
 use App\Services\Payments\LocalPaymentService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -122,6 +124,30 @@ class LocalPaymentServiceTest extends TestCase
         });
 
         $this->expectException(DeniedPayment::class);
+
+        $service = app(LocalPaymentService::class);
+        $service->pay(99, 'Lorem ipsum.', $payee->id);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $payer->id,
+            'balance' => 100,
+        ]);
+
+        $this->assertDatabaseCount('payments', 0);
+    }
+
+    /** @test */
+    public function it_raises_an_exception_if_the_user_does_not_has_permission_to_do_payments()
+    {
+        $payee = User::factory()->createOne();
+
+        $this->actingAs($payer = User::factory()->createOne(['balance' => 100]));
+
+        $this->mock(PermissionsService::class, function ($mock) {
+            $mock->shouldReceive('userCan')->andReturn(false);
+        });
+
+        $this->expectException(CantPerformAction::class);
 
         $service = app(LocalPaymentService::class);
         $service->pay(99, 'Lorem ipsum.', $payee->id);

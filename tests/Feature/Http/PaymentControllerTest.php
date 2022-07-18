@@ -3,6 +3,7 @@
 namespace Tests\Feature\Http;
 
 use App\Contracts\Payments\Authorization\AuthorizationService;
+use App\Contracts\Permissions\PermissionsService;
 use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -291,6 +292,31 @@ class PaymentControllerTest extends TestCase
         $response->assertStatus(500)
             ->assertJson([
                 'message' => trans('exceptions.denied_payment'),
+            ]);
+    }
+
+    /** @test */
+    public function it_returns_error_if_the_user_cannot_do_payments()
+    {
+        $payee = User::factory()->createOne();
+
+        Sanctum::actingAs(User::factory()->createOne([
+            'balance' => 100,
+        ]));
+
+        $this->mock(PermissionsService::class, function ($mock) {
+            $mock->shouldReceive('userCan')->andReturn(false);
+        });
+
+        $response = $this->postJson(route('payments.store'), [
+            'payee_id' => $payee->id,
+            'amount' => 100,
+            'message' => 'Payment for something',
+        ]);
+
+        $response->assertStatus(403)
+            ->assertJson([
+                'message' => trans('exceptions.cant_perform_action'),
             ]);
     }
 }
