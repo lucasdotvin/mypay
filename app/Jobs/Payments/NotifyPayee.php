@@ -5,7 +5,6 @@ namespace App\Jobs\Payments;
 use App\Contracts\Payments\Notification\NotificationService;
 use App\Models\Payment;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -22,7 +21,8 @@ class NotifyPayee implements ShouldQueue
      */
     public function __construct(
         private Payment $payment,
-    ) {}
+    ) {
+    }
 
     /**
      * Execute the job.

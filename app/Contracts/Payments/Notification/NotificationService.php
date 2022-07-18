@@ -10,6 +10,7 @@ interface NotificationService
      * @param  int  $userId
      * @param  int  $paymentId
      * @return void
+     *
      * @throws NotificationNotSent if notification was not sent
      */
     public function notify(int $userId, int $paymentId): void;

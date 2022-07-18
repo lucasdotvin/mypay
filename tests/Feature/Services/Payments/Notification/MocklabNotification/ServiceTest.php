@@ -3,8 +3,8 @@
 namespace Tests\Feature\Services\Payments\Notification\MocklabNotification;
 
 use App\Exceptions\Payments\NotificationNotSent;
-use App\Services\Payments\Notification\MocklabNotification\NotificationResult;
 use App\Services\Payments\Notification\MocklabNotification\Client;
+use App\Services\Payments\Notification\MocklabNotification\NotificationResult;
 use App\Services\Payments\Notification\MocklabNotification\Service;
 use Mockery\MockInterface;
 use Tests\TestCase;

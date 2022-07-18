@@ -58,7 +58,7 @@ class LocalPaymentService implements PaymentServiceContract
     /**
      * Notify the payee about the payment.
      *
-     * @param Payment $payment
+     * @param  Payment  $payment
      */
     private function notifyPayee(Payment $payment)
     {
