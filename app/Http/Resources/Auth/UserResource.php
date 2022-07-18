@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Auth;
 
+use App\Http\Resources\RoleResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserReferenceResource extends JsonResource
+class UserResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,6 +19,10 @@ class UserReferenceResource extends JsonResource
             'id' => $this->id,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
+            'document' => $this->document,
+            'email' => $this->email,
+            'role' => RoleResource::make($this->role),
+            'created_at' => $this->created_at->toIsoString(),
         ];
     }
 }

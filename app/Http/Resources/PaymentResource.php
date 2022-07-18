@@ -18,8 +18,8 @@ class PaymentResource extends JsonResource
             'id' => $this->id,
             'amount' => $this->amount,
             'message' => $this->message,
-            'payee' => new UserReferenceResource($this->payee),
-            'payer' => new UserReferenceResource($this->payer),
+            'payee' => new UserResource($this->payee),
+            'payer' => new UserResource($this->payer),
             'created_at' => $this->created_at->toIsoString(),
         ];
     }

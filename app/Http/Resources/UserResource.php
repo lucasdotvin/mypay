@@ -18,10 +18,7 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
-            'document' => $this->document,
-            'email' => $this->email,
             'role' => RoleResource::make($this->role),
-            'created_at' => $this->created_at->toIsoString(),
         ];
     }
 }
