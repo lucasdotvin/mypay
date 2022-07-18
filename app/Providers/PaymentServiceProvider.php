@@ -27,5 +27,10 @@ class PaymentServiceProvider extends ServiceProvider
             \App\Contracts\Payments\Authorization\AuthorizationService::class,
             \App\Services\Payments\Authorization\MockyAuthorizator\Service::class,
         );
+
+        $this->app->bind(
+            \App\Contracts\Payments\Notification\NotificationService::class,
+            \App\Services\Payments\Notification\MocklabNotification\Service::class,
+        );
     }
 }

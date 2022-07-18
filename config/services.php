@@ -37,4 +37,10 @@ return [
         'secret' => env('MOCKY_AUTHORIZATOR_API_SECRET'),
     ],
 
+    'mocklab' => [
+        'url' => env('MOCKLAB_NOTIFICATOR_URL'),
+        'key' => env('MOCKLAB_NOTIFICATOR_API_KEY'),
+        'secret' => env('MOCKLAB_NOTIFICATOR_API_SECRET'),
+    ],
+
 ];
