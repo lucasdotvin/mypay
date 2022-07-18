@@ -5,6 +5,7 @@ namespace App\Services\Payments;
 use App\Contracts\Balance\BalanceService;
 use App\Contracts\Payments\PaymentRepository;
 use App\Contracts\Payments\PaymentService as PaymentServiceContract;
+use App\Exceptions\Payments\NonSufficientFunds;
 use App\Models\Payment;
 use Illuminate\Pagination\CursorPaginator;
 use Illuminate\Support\Facades\DB;
@@ -26,9 +27,7 @@ class LocalPaymentService implements PaymentServiceContract
     public function pay(int $amount, string $message, int $payeeId): int
     {
         return DB::transaction(function () use ($amount, $message, $payeeId) {
-            if (! $this->canAfford($amount)) {
-                throw new ValueError(trans('exceptions.messages.non-sufficient-funds'));
-            }
+            throw_unless($this->canAfford($amount), new NonSufficientFunds);
 
             $payment = $this->registerPayment($amount, $message, $payeeId, auth()->id());
 

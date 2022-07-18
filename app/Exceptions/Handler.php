@@ -43,8 +43,8 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->reportable(function (\App\Exceptions\Payments\NonSufficientFunds $e) {
+            return response()->json(['message' => 'exceptions.non_sufficient_funds'], 400);
         });
     }
 }
