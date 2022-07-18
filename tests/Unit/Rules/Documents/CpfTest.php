@@ -66,4 +66,14 @@ class CpfTest extends TestCase
 
         $this->assertFalse($passes);
     }
+
+    /** @test */
+    public function it_returns_the_expected_error_message()
+    {
+        $rule = new Cpf;
+
+        $message = $rule->message();
+
+        $this->assertEquals('validation.cpf', $message);
+    }
 }
