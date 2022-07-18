@@ -27,8 +27,8 @@ class UserControllerTest extends TestCase
     {
         Sanctum::actingAs(User::factory()->createOne());
 
-        $firstUser = User::factory()->createOne();
-        User::factory()->createOne();
+        User::factory()->createOne(['first_name' => 'cd']);
+        $firstUser = User::factory()->createOne(['first_name' => 'ab']);
 
         $response = $this->getJson(route('users.index'));
 
