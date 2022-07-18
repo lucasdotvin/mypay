@@ -7,9 +7,11 @@ use App\Contracts\Permissions\PermissionsService;
 use App\Exceptions\Payments\DeniedPayment;
 use App\Exceptions\Payments\NonSufficientFunds;
 use App\Exceptions\Permissions\CantPerformAction;
+use App\Jobs\Payments\NotifyPayee;
 use App\Models\User;
 use App\Services\Payments\LocalPaymentService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Bus;
 use Tests\TestCase;
 use Tests\Traits\FillDatabaseWithMandatoryData;
 
@@ -47,8 +49,12 @@ class LocalPaymentServiceTest extends TestCase
 
         $this->actingAs($payer = User::factory()->createOne(['balance' => 100]));
 
+        Bus::fake();
+
         $service = app(LocalPaymentService::class);
         $paymmentId = $service->pay(99, 'Lorem ipsum.', $payee->id);
+
+        Bus::assertDispatched(NotifyPayee::class);
 
         $this->assertDatabaseHas('payments', [
             'id' => $paymmentId,
@@ -66,6 +72,8 @@ class LocalPaymentServiceTest extends TestCase
 
         $this->actingAs(User::factory()->createOne(['balance' => 100]));
 
+        Bus::fake();
+
         $service = app(LocalPaymentService::class);
         $service->pay(99, 'Lorem ipsum.', $payee->id);
 
@@ -82,6 +90,8 @@ class LocalPaymentServiceTest extends TestCase
 
         $this->actingAs($payer = User::factory()->createOne(['balance' => 100]));
 
+        Bus::fake();
+
         $service = app(LocalPaymentService::class);
         $service->pay(99, 'Lorem ipsum.', $payee->id);
 
@@ -89,6 +99,21 @@ class LocalPaymentServiceTest extends TestCase
             'id' => $payer->id,
             'balance' => 1,
         ]);
+    }
+
+    /** @test */
+    public function it_dispatches_a_notification_job()
+    {
+        $payee = User::factory()->createOne();
+
+        $this->actingAs(User::factory()->createOne(['balance' => 100]));
+
+        Bus::fake();
+
+        $service = app(LocalPaymentService::class);
+        $service->pay(99, 'Lorem ipsum.', $payee->id);
+
+        Bus::assertDispatched(NotifyPayee::class);
     }
 
     /** @test */

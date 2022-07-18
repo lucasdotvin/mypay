@@ -8,6 +8,7 @@ use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -213,6 +214,8 @@ class PaymentControllerTest extends TestCase
             'balance' => 100,
         ]));
 
+        Bus::fake();
+
         $response = $this->postJson(route('payments.store'), [
             'payee_id' => $payee->id,
             'amount' => 100,
@@ -237,6 +240,8 @@ class PaymentControllerTest extends TestCase
             'balance' => 100,
         ]));
 
+        Bus::fake();
+
         $this->postJson(route('payments.store'), [
             'payee_id' => $payee->id,
             'amount' => 100,
@@ -257,6 +262,8 @@ class PaymentControllerTest extends TestCase
         Sanctum::actingAs($user = User::factory()->createOne([
             'balance' => 100,
         ]));
+
+        Bus::fake();
 
         $this->postJson(route('payments.store'), [
             'payee_id' => $payee->id,
