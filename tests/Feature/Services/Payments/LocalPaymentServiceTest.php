@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Services\Payments;
 
+use App\Exceptions\Payments\NonSufficientFunds;
 use App\Models\User;
 use App\Services\Payments\LocalPaymentService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -94,8 +95,7 @@ class LocalPaymentServiceTest extends TestCase
 
         $this->actingAs($payer = User::factory()->createOne(['balance' => 100]));
 
-        $this->expectException(ValueError::class);
-        $this->expectExceptionMessage(trans('exceptions.messages.non-sufficient-funds'));
+        $this->expectException(NonSufficientFunds::class);
 
         $service = app(LocalPaymentService::class);
         $service->pay(101, 'Lorem ipsum.', $payee->id);
